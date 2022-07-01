@@ -1,0 +1,6 @@
+https://webpack.js.org/concepts/
+https://webpack.js.org/blog/2020-10-10-webpack-5-release/
+https://reactjs.org/
+https://docs.npmjs.com/
+https://www.tensorflow.org/
+https://www.tensorflow.org/js
