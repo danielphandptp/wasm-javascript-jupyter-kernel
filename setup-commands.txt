@@ -1,0 +1,2 @@
+npx create-react-app <project-path> --template typescript
+npm install --save-exact esbuild-wasm@0.8.27
