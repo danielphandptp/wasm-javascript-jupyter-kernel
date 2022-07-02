@@ -1,20 +1,18 @@
 import * as esbuild from 'esbuild-wasm';
-import axios from 'axios';
-import localForage from 'localforage';
-
-const fileCache = localForage.createInstance({
-	name: 'filecache'
-});
 
 
-export const unpkgPathPlugin = (inputCode: string) => {
+export const unpkgPathPlugin = () => {
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
-			build.onResolve({ filter: /(^index\.js$)/ }, () => {
+
+			// RESOLVE
+			// Case 1: index.js is located in root 
+			build.onResolve({ filter: /(^index\.js$)/ }, (args?: any) => {
 				return { path: 'index.js', namespace: 'a' };
 			});
 
+			// Case 2: index.js is located a relative path
 			build.onResolve({ filter: /^\.+\//}, (args: any) => {
 				return {
 					namespace: 'a',
@@ -22,8 +20,8 @@ export const unpkgPathPlugin = (inputCode: string) => {
 				};
 			});
 
+			// Case 3: handle the main file of the module
       build.onResolve({ filter: /.*/ }, async (args: any) => {
-
 				return {
 					namespace: 'a',
 					path: `https://unpkg.com/${args.path}`
@@ -31,40 +29,6 @@ export const unpkgPathPlugin = (inputCode: string) => {
       });
 
       
-			build.onLoad({ filter: /.*/ }, async (args: any) => {
-        console.log('onLoad', args);
-        
-				if (args.path === 'index.js') {
-          return {
-            loader: 'jsx',
-            contents: inputCode,
-          };
-        }
-
-				// Check to see if we have already fetched this file
-				const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-				
-				// Return if is in cache
-				if (cachedResult) {
-					return cachedResult;
-				}
-				
-				const { data, request } = await axios.get(args.path);
-
-				console.log(request);
-				
-				const result: esbuild.OnLoadResult = {
-					loader: 'jsx',
-					contents: data,
-					resolveDir: new URL('./', request.responseURL).pathname
-				};
-				
-				// store the response in cache
-				await fileCache.setItem(args.path, result);
-
-				return result;
-
-			});
 		},
   };
 };

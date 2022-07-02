@@ -2,6 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import { useState, useEffect, useRef } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
+import { fetchPlugin } from './plugins/fetch-plugin';
 
 const App = () => {
 	const ref = useRef<any>();
@@ -11,13 +12,13 @@ const App = () => {
 	const startService = async () => {
 		ref.current = await esbuild.startService({
 			worker: true,
-			wasmURL: '/esbuild.wasm',
+			wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
 		});
 	};
 
 	const onChange = (event: React.ChangeEvent<HTMLTextAreaElement> | undefined) => {
 		if (event) {
-			console.log(event.target.value);
+			// console.log(event.target.value);
 			setInput(event.target.value);
 		}
 	}
@@ -34,14 +35,25 @@ const App = () => {
 			entryPoints: ['index.js'],
 			bundle: true,
 			write: false,
-			plugins: [unpkgPathPlugin(input)],
+			plugins: [
+				unpkgPathPlugin(),
+				fetchPlugin(input)
+			],
 			define: {
 				'process.env.NODE_ENV': '"production"',
 				global: 'window',
 			},
 		});
-		console.log(result);
+
+		// console.log(result);
+		
 		setCode(result.outputFiles[0].text);
+
+		try {
+			eval(result.outputFiles[0].text);
+		} catch (err) {
+			alert(err);
+		}
 	};
 
 	return (
