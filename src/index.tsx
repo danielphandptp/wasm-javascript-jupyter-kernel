@@ -6,6 +6,7 @@ import { fetchPlugin } from './plugins/fetch-plugin';
 
 const App = () => {
 	const ref = useRef<any>();
+	const iframe = useRef<any>();
 	const [input, setInput] = useState('');
 	const [code, setCode] = useState('');
 
@@ -44,21 +45,28 @@ const App = () => {
 				global: 'window',
 			},
 		});
-
-		// console.log(result);
 		
-		setCode(result.outputFiles[0].text);
-
-		try {
-			eval(result.outputFiles[0].text);
-		} catch (err) {
-			alert(err);
-		}
+		// setCode(result.outputFiles[0].text);
+		iframe.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
 	};
+
+	const html = (`
+		<html>
+			<head></head>
+			<body>
+				<div id="root"></div>
+				<script>
+					window.addEventListener('message', (event) => {
+						eval(event.data);
+					}, false);
+				</script>
+			</body>
+		</html>
+	`);
 
 	return (
 		<div>
-			------------------
+			{/* ------------------ */}
 			{/* Area to enter code */}
 			{/* ------------------ */}
 			<textarea
@@ -80,10 +88,11 @@ const App = () => {
 			{/* Display area of the transpiled code */}
 			{/* ----------------------------------- */}
 			<pre>{code}</pre>
-			{/* <iframe sandbox="allow-same-origin" src="/test.html"></iframe> */}
+			<iframe ref={iframe} sandbox="allow-scripts" srcDoc={html}/>
 		</div>
 	)
 };
+
 
 const root = ReactDOM.createRoot(document.querySelector('#root')!);
 root.render(<App />)
