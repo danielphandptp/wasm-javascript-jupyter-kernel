@@ -58,7 +58,7 @@ const App = () => {
 
 	return (
 		<div>
-			{/* ------------------ */}
+			------------------
 			{/* Area to enter code */}
 			{/* ------------------ */}
 			<textarea
@@ -79,9 +79,8 @@ const App = () => {
 			{/* ----------------------------------- */}
 			{/* Display area of the transpiled code */}
 			{/* ----------------------------------- */}
-			<pre>
-				{code}
-			</pre>
+			<pre>{code}</pre>
+			{/* <iframe sandbox="allow-same-origin" src="/test.html"></iframe> */}
 		</div>
 	)
 };
