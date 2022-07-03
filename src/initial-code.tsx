@@ -1,0 +1,1 @@
+export const initialCode = "// JavaScript Jupyter Kernel | Enhanced with WebAssembly for lightning fast performance";
