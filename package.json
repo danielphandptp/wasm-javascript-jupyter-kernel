@@ -23,6 +23,7 @@
 		"@types/react": "^18.0.14",
 		"@types/react-dom": "^18.0.5",
 		"@types/react-resizable": "1.7.2",
+		"@uiw/react-md-editor": "2.1.1",
 		"assert": "^2.0.0",
 		"axios": "^0.27.2",
 		"bulmaswatch": "^0.8.1",
