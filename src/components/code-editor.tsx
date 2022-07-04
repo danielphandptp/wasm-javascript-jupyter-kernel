@@ -4,8 +4,6 @@ import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
 import { editor } from 'monaco-editor';
-// import codeShift from 'jscodeshift';
-// import Highlighter from 'monaco-jsx-highlighter';
 
 declare module 'monaco-jsx-highlighter';
 
@@ -28,15 +26,6 @@ const CodeEditor: React.FunctionComponent<CodeEditorProps> = ({
     monacoEditor.getModel()?.updateOptions({
       tabSize: 2,
     });
-
-    // TO-DO research syntax parser
-    // const highlighter = new Highlighter(
-    // 	// @ts-ignore
-    // 	window.monaco,
-    // 	codeShift,
-    // 	monacoEditor
-    // );
-    // highlighter.highlightOnDidChangeModelContent();
   };
 
   const onFormatClick = () => {
