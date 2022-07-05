@@ -6,7 +6,7 @@ import TextEditor from './components/text-editor';
 
 const App = () => {
   return (
-    <Provider store={store}>
+    <Provider {...{ store: store }}>
       <div>
         {/* <CodeCell /> */}
         <TextEditor />
