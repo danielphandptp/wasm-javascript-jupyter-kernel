@@ -1,1 +1,1 @@
-import {} from "react";
+export default 1;
