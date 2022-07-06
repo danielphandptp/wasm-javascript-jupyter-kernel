@@ -21,6 +21,20 @@ const CodeCell: React.FunctionComponent<CodeCellProps> = ({ cell }) => {
       return null;
     }
   });
+  const cumulativeCode = useTypedSelector((state) => {
+    const { data, order } = state.cells;
+    const orderedCells = order.map((id: any) => data[id]);
+    const cumulativeCode = [];
+    for (let c of orderedCells) {
+      if (c.type === 'code') {
+        cumulativeCode.push(c.content);
+      }
+      if (c.id === cell.id) {
+        break;
+      }
+    }
+    return cumulativeCode;
+  });
 
   useEffect(() => {
     if (!bundle) {
