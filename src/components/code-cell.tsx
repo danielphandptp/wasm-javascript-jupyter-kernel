@@ -21,6 +21,7 @@ const CodeCell: React.FunctionComponent<CodeCellProps> = ({ cell }) => {
       return null;
     }
   });
+
   const cumulativeCode = useTypedSelector((state) => {
     if (!state.cells) {
       return [];
@@ -41,17 +42,19 @@ const CodeCell: React.FunctionComponent<CodeCellProps> = ({ cell }) => {
 
   useEffect(() => {
     if (!bundle) {
-      createBundle(cell.id, cell.content);
+      createBundle(cell.id, cumulativeCode.join('\n'));
       return;
     }
+
     const timer = setTimeout(async () => {
-      createBundle(cell.id, cell.content);
+      createBundle(cell.id, cumulativeCode.join('\n'));
     }, 750);
     return () => {
       clearTimeout(timer);
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.content, cell.id]);
+  }, [cumulativeCode.join('\n'), cell.id]);
 
   return (
     <Resizable direction="vertical">
