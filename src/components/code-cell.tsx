@@ -22,6 +22,9 @@ const CodeCell: React.FunctionComponent<CodeCellProps> = ({ cell }) => {
     }
   });
   const cumulativeCode = useTypedSelector((state) => {
+    if (!state.cells) {
+      return [];
+    }
     const { data, order } = state.cells;
     const orderedCells = order.map((id: any) => data[id]);
     const cumulativeCode = [];
