@@ -3,6 +3,7 @@ import { CellsState } from '../state/reducers/cellsReducer';
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import CellListItem from './cell-list-item';
 import AddCell from './add-cell';
+import './cell-list.css';
 
 const CellList: React.FunctionComponent = () => {
   const cells = useTypedSelector((state) => {
@@ -20,7 +21,7 @@ const CellList: React.FunctionComponent = () => {
   ));
 
   return (
-    <div>
+    <div className="cell-list">
       <AddCell forceVisible={cells.length === 0} previousCellId={null} />
       {renderedCells}
     </div>
